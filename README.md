@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🏆 Sports Fixture Hub - Match Fixture Management Website
 
 A comprehensive, modern, and responsive match fixture management website for sports tournaments, clubs, and competitions. Build with HTML5, CSS3, JavaScript, and Node.js backend.
@@ -326,3 +327,6 @@ Built with ❤️ for sports enthusiasts and tournament organizers
 **Version:** 1.0.0  
 **Last Updated:** June 2, 2026  
 **Status:** Production Ready ✅
+=======
+# Playsport - Live sport events
+>>>>>>> d9180dd8faf0b65705e3d0419773522c0c7a9bea
