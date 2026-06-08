@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Match Fixture Management Website - View and manage sports fixtures"
+    />
+    <title>🏆 Sports Fixture Hub - Match Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="backgroundLayer" class="background-layer"></div>
+
+    <!-- NAVIGATION HEADER -->
+    <header class="main-header">
+      <div class="header-container">
+        <div class="logo">
+          <h1>🏆 Sports Fixture Hub</h1>
+          <p class="tagline">Professional Fixture Management</p>
+        </div>
+
+
+        <div class="header-controls">
+          <div class="search-container">
+            <input
+              id="headerSearch"
+              type="text"
+              placeholder="🔍 Search team, competition..."
+              class="search-input"
+            />
+          </div>
+
+          <div class="filter-container">
+            <select id="headerCompetitionFilter" class="filter-select">
+              <option value="">All Competitions</option>
+              <option value="Premier League">Premier League</option>
+              <option value="La Liga">La Liga</option>
+              <option value="NBA">NBA</option>
+              <option value="European Cup">European Cup</option>
+              <option value="Champions League">Champions League</option>
+              <option value="Wimbledon">Wimbledon</option>
+              <option value="ICC World Cup">ICC World Cup</option>
+              <option value="Rugby Six Nations">Rugby Six Nations</option>
+            </select>
+
+            <select id="headerStatusFilter" class="filter-select">
+              <option value="">All Status</option>
+              <option value="Upcoming">🔵 Upcoming</option>
+              <option value="Live">🔴 Live</option>
+              <option value="Finished">✅ Finished</option>
+            </select>
+          </div>
+
+          <div class="header-actions">
+            <button
+              class="btn-icon"
+              onclick="toggleTheme()"
+              title="Toggle dark mode"
+            >
+              🌙
+            </button>
+            <button
+              class="btn-icon"
+              onclick="showNotifications()"
+              title="Notifications"
+              id="notifBell"
+            >
+              🔔
+        
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- DYNAMIC BACKGROUND HERO -->
+    <section class="hero-banner">
+      <div class="hero-accents">
+        <span class="hero-accent accent-one"></span>
+        <span class="hero-accent accent-two"></span>
+        <span class="hero-accent accent-three"></span>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-copy">
+          <span class="eyebrow">Elite Sports Operations</span>
+          <h2>
+            Welcome back, Coach — manage every match from one premium command
+            center.
+          </h2>
+          <p class="hero-description">
+            Manage Volleyball, Basketball, Rugby, Football, Tennis, Handball,
+            Cricket and more with premium dashboards, live match control, and
+            tournament intelligence.
+          </p>
+          <div class="hero-actions">
+            <button class="btn-primary btn-glow" onclick="openAdminDashboard()">
+              Dashboard Control
+            </button>
+            <button
+              class="btn-secondary btn-glow"
+              onclick="showLiveAlerts()"
+            >
+              Live Alerts
+            </button>
+          </div>
+          <div class="hero-stats-grid">
+            <div class="hero-stat-card glass-card">
+              <span class="stat-title">Total Fixtures</span>
+              <strong id="heroTotalFixtures">0</strong>
+            </div>
+            <div class="hero-stat-card glass-card">
+              <span class="stat-title">Active Teams</span>
+              <strong id="heroTeamsCount">0</strong>
+            </div>
+            <div class="hero-stat-card glass-card">
+              <span class="stat-title">Live Matches</span>
+              <strong id="heroLiveMatches">0</strong>
+            </div>
+          </div>
+        </div>
+            <div class="hero-media-grid">
+          <div class="hero-card glass-card">
+            <div class="hero-card-label" style="position: relative; left: 0; bottom: 0; padding: 26px;">
+              🏟️ Match Preview
+            </div>
+          </div>
+          <div class="hero-card glass-card">
+            <div class="hero-card-label" style="position: relative; left: 0; bottom: 0; padding: 26px;">
+              📈 Analytics Studio
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- HOME VIEW -->
+      <section id="homeView" class="view-section active">
+        <div class="container">
+          <section class="dashboard-section">
+            <div id="overviewStats" class="stats-grid"></div>
+          </section>
+
+          <section class="categories-section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">🏅 Sports Categories</h2>
+                <p class="section-subtitle">
+                  Choose a sport category and manage fixtures for every league.
+                </p>
+              </div>
+            </div>
+            <div id="sportsCategories" class="categories-grid"></div>
+          </section>
+
+          <section class="filters-section glass-panel">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">Filter Matches</h2>
+                <p class="section-subtitle">
+                  Refine your search by sport, team, tournament, status, or
+                  date.
+                </p>
+              </div>
+            </div>
+            <div class="filter-grid">
+              <div class="form-group">
+                <label>Sport</label>
+                <select id="sportFilter" class="form-input"></select>
+              </div>
+              <div class="form-group">
+                <label>Team</label>
+                <select id="teamFilter" class="form-input"></select>
+              </div>
+              <div class="form-group">
+                <label>Tournament</label>
+                <select id="competitionFilter" class="form-input">
+                  <option value="">All Competitions<
+                    emier League</option>
+                  <option value="La Liga">La Liga</option>
+                  <option value="NBA">NBA</option>
+                  <option value="European Cup">European Cup</option>
+                  <option value="Champions League">Champions League</option>
+                  <option value="Wimbledon">Wimbledon</option>
+                  <option value="ICC World Cup">ICC World Cup</option>
+                  <option value="Rugby Six Nations">Rugby Six Nations</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select id="statusFilter" class="form-input">
+                  <option value="">All Status</option>
+                  <option value="Upcoming">🔵 Upcoming</option>
+                  <option value="Live">🔴 Live</option>
+                  <option value="Finished">✅ Finished</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Date</label>
+                <input id="dateFilter" type="date" class="form-input" />
+              </div>
+              <div class="form-group search-group">
+                <label>Search</label>
+                <div class="search-action-row">
+                  <input
+                    id="search"
+                    type="text"
+                    placeholder="Search teams, venue, sport..."
+                    class="form-input search-input"
+                  />
+                  <button class="btn-secondary search-enter-btn" type="button" onclick="runSearch()">
+                    Enter
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="matches-section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">📅 Upcoming Matches</h2>
+                <p class="section-subtitle">
+                  Fast access to every scheduled fixture across sports.
+                </p>
+              </div>
+              <div class="sort-controls">
+                <button class="sort-btn" onclick="sortFixtures('date')">
+                  Date
+                </button>
+                <button class="sort-btn" onclick="sortFixtures('time')">
+                  Time
+                </button>
+              </div>
+            </div>
+
+            <!-- UPLOAD / SUBMIT UPCOMING MATCH -->
+            <div class="add-fixture-form" style="margin-bottom: 25px">
+              <h4>➕ Add Upcoming Match</h4>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Team 1</label>
+                  <select id="upTeam1" class="form-input"></select>
+                </div>
+                <div class="form-group">
+                  <label>Team 2</label>
+                  <select id="upTeam2" class="form-input"></select>
+                </div>
+                <div class="form-group">
+                  <label>Tournament</label>
+                  <select id="upCompetition" class="form-input">
+                    <option value="">Select Competition</option>
+                    <option value="Premier League">Premier League</option>
+                    <option value="FA Cup">FA Cup</option>
+                    <option value="NBA Season 2026">NBA Season 2026</option>
+                    <option value="Summer Tournament">Summer Tournament</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Match Date</label>
+                  <input id="upMatchDate" type="date" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label>Kick-off Time</label>
+                  <input id="upMatchTime" type="time" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label>Venue</label>
+                  <input
+                    id="upVenue"
+                    type="text"
+                    placeholder="Stadium / Venue"
+                    class="form-input"
+                  />
+                </div>
+              </div>
+              <button
+                onclick="submitUpcomingMatch()"
+                class="btn-primary btn-full"
+              >
+                Submit Match
+              </button>
+            </div>
+
+            <div id="fixturesList" class="matches-grid"></div>
+          </section>
+
+          <section class="live-section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">🔥 Live Matches</h2>
+                <p class="section-subtitle">
+                  Highlighting action that is currently underway.
+                </p>
+              </div>
+            </div>
+            <div id="liveMatches" class="live-grid"></div>
+          </section>
+
+          <section class="standings-section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">🏆 Standings & Results</h2>
+                <p class="section-subtitle">
+                  Track team ranking, wins, losses and points.
+                </p>
+              </div>
+            </div>
+
+            <div class="glass-panel" style="margin-bottom: 20px; padding: 20px;">
+              <h3 style="margin: 0 0 10px; font-size: 18px;">Standings Summary</h3>
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
+                <div style="background: rgba(99, 102, 241, 0.10); padding: 14px; border-radius: 14px;">
+                  <div style="font-size: 12px; color: rgba(71, 85, 105, 0.9);">Competitions</div>
+                  <div id="summaryCompetitions" style="font-weight: 800; font-size: 22px; color: var(--primary-color);">0</div>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.10); padding: 14px; border-radius: 14px;">
+                  <div style="font-size: 12px; color: rgba(71, 85, 105, 0.9);">Finished Matches</div>
+                  <div id="summaryFinishedMatches" style="font-weight: 800; font-size: 22px; color: #10b981;">0</div>
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.10); padding: 14px; border-radius: 14px;">
+                  <div style="font-size: 12px; color: rgba(71, 85, 105, 0.9);">Total Teams</div>
+                  <div id="summaryTeams" style="font-weight: 800; font-size: 22px; color: #ef4444;">0</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="standingsList" class="standings-grid"></div>
+          </section>
+
+        </div>
+      </section>
+
+      <!-- ADMIN DASHBOARD VIEW -->
+      <section id="adminView" class="view-section hidden">
+        <div class="admin-container">
+          <!-- LOGIN SECTION -->
+          <div id="loginSection" class="login-section">
+            <div class="login-card">
+              <h2>🔐 Admin Login</h2>
+              <div class="form-group">
+                <label>Username</label>
+                <input
+                  id="adminUsername"
+                  type="text"
+                  placeholder="Enter username"
+                  class="form-input"
+                />
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input
+                  id="adminPassword"
+                  type="password"
+                  placeholder="Enter password"
+                  class="form-input"
+                />
+              </div>
+              <button onclick="loginAdmin()" class="btn-primary btn-full">
+                Login
+              </button>
+              <button
+                onclick="closeAdminDashboard()"
+                class="btn-secondary btn-full"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <!-- ADMIN PANEL -->
+          <div id="adminPanel" class="admin-panel hidden">
+            <div class="admin-header">
+              <h2>📊 Admin Dashboard</h2>
+              <button onclick="logoutAdmin()" class="btn-danger">Logout</button>
+            </div>
+
+            <div class="admin-tabs">
+              <button
+                class="tab-btn active"
+                onclick="switchAdminTab('fixtures')"
+              >
+                Fixtures
+              </button>
+              <button class="tab-btn" onclick="switchAdminTab('teams')">
+                Teams
+              </button>
+              <button class="tab-btn" onclick="switchAdminTab('competitions')">
+                Competitions
+              </button>
+              <button class="tab-btn" onclick="switchAdminTab('generator')">
+                Tournament
+              </button>
+            </div>
+
+            <!-- FIXTURES TAB -->
+            <div id="fixturesTab" class="admin-tab active">
+              <h3>Manage Fixtures</h3>
+              <div class="add-fixture-form">
+                <h4>Add New Fixture</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Team 1</label>
+                    <select id="team1Select" class="form-input"></select>
+                  </div>
+                  <div class="form-group">
+                    <label>Team 2</label>
+                    <select id="team2Select" class="form-input"></select>
+                  </div>
+                  <div class="form-group">
+                    <label>Competition</label>
+                    <select id="competitionSelect" class="form-input"></select>
+                  </div>
+                  <div class="form-group">
+                    <label>Match Date</label>
+                    <input id="matchDate" type="date" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Kick-off Time</label>
+                    <input id="matchTime" type="time" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Venue</label>
+                    <input
+                      id="venue"
+                      type="text"
+                      placeholder="Stadium name"
+                      class="form-input"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Status</label>
+                    <select id="fixtureStatus" class="form-input">
+                      <option value="Upcoming">🔵 Upcoming</option>
+                      <option value="Live">🔴 Live</option>
+                      <option value="Finished">✅ Finished</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Score (if finished)</label>
+                    <input
+                      id="score"
+                      type="text"
+                      placeholder="e.g., 2-1"
+                      class="form-input"
+                    />
+                  </div>
+                </div>
+                <button onclick="addFixture()" class="btn-primary btn-full">
+                  Add Fixture
+                </button>
+              </div>
+
+              <h4 style="margin-top: 30px">Existing Fixtures</h4>
+              <div id="fixturesTable" class="fixtures-table"></div>
+            </div>
+
+            <!-- TEAMS TAB -->
+            <div id="teamsTab" class="admin-tab hidden">
+              <h3>Manage Teams</h3>
+              <div class="add-team-form">
+                <h4>Add New Team</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Team Name</label>
+                    <input
+                      id="teamName"
+                      type="text"
+                      placeholder="Team name"
+                      class="form-input"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Sport</label>
+                    <select id="teamSport" class="form-input">
+                      <option value="Football">⚽ Football</option>
+                      <option value="Basketball">🏀 Basketball</option>
+                      <option value="Volleyball">🏐 Volleyball</option>
+                      <option value="Hockey">🏒 Hockey</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Coach</label>
+                    <input
+                      id="teamCoach"
+                      type="text"
+                      placeholder="Coach name"
+                      class="form-input"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Logo URL</label>
+                    <input
+                      id="teamLogo"
+                      type="url"
+                      placeholder="Team logo URL"
+                      class="form-input"
+                    />
+                  </div>
+                </div>
+                <button onclick="addTeam()" class="btn-primary btn-full">
+                  Add Team
+                </button>
+              </div>
+
+              <h4 style="margin-top: 30px">Teams List</h4>
+              <div id="teamsList" class="teams-grid"></div>
+            </div>
+
+            <!-- COMPETITIONS TAB -->
+            <div id="competitionsTab" class="admin-tab hidden">
+              <h3>Manage Competitions</h3>
+              <div class="add-competition-form">
+                <h4>Add New Competition</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Competition Name</label>
+                    <input
+                      id="competitionName"
+                      type="text"
+                      placeholder="Competition name"
+                      class="form-input"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Sport</label>
+                    <select id="competitionSport" class="form-input">
+                      <option value="Football">⚽ Football</option>
+                      <option value="Basketball">🏀 Basketball</option>
+                      <option value="Volleyball">🏐 Volleyball</option>
+                      <option value="Hockey">🏒 Hockey</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Start Date</label>
+                    <input
+                      id="competitionStart"
+                      type="date"
+                      class="form-input"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>End Date</label>
+                    <input id="competitionEnd" type="date" class="form-input" />
+                  </div>
+                </div>
+                <button onclick="addCompetition()" class="btn-primary btn-full">
+                  Add Competition
+                </button>
+              </div>
+
+              <h4 style="margin-top: 30px">Competitions List</h4>
+              <div id="competitionsList" class="competitions-grid"></div>
+            </div>
+
+            <!-- TOURNAMENT GENERATOR TAB -->
+            <div id="generatorTab" class="admin-tab hidden">
+              <h3>🎲 Auto Generate Fixtures</h3>
+              <div class="generator-form">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Select Teams (Multiple)</label>
+                    <div id="teamsList2" class="checkbox-list"></div>
+                  </div>
+                  <div class="form-group">
+                    <label>Tournament Type</label>
+                    <select id="tournamentType" class="form-input">
+                      <option value="roundrobin">Round Robin</option>
+                      <option value="knockout">Knockout</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Competition</label>
+                    <select
+                      id="generatorCompetition"
+                      class="form-input"
+                    ></select>
+                  </div>
+                  <div class="form-group">
+                    <label>Start Date</label>
+                    <input
+                      id="generatorStartDate"
+                      type="date"
+                      class="form-input"
+                    />
+                  </div>
+                </div>
+                <button
+                  onclick="generateFixtures()"
+                  class="btn-primary btn-full"
+                >
+                  Generate Fixtures
+                </button>
+              </div>
+
+              <div id="generatorOutput" style="margin-top: 20px"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- NOTIFICATIONS MODAL -->
+    <div id="notificationsModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>🔔 Notifications</h2>
+          <button onclick="closeNotifications()" class="close-btn">
+            &times;
+          </button>
+        </div>
+        <div id="notificationsList" class="notifications-list"></div>
+      </div>
+    </div>
+
+    <!-- FIXTURE DETAIL MODAL -->
+    <div id="fixtureDetailModal" class="modal hidden">
+      <div class="modal-content modal-large">
+        <div class="modal-header">
+          <h2 id="fixtureDetailTitle">Match Details</h2>
+          <button onclick="closeFixtureDetail()" class="close-btn">
+            &times;
+          </button>
+        </div>
+        <div id="fixtureDetailBody" class="fixture-detail"></div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="shareFixture('facebook')">
+            📱 Share on Facebook
+          </button>
+          <button class="btn-secondary" onclick="shareFixture('twitter')">
+            🐦 Share on Twitter
+          </button>
+          <button class="btn-secondary" onclick="shareFixture('whatsapp')">
+            💬 Share on WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2026 Sports Fixture Hub. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
